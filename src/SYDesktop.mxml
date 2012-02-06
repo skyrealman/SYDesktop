@@ -6,5 +6,5 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Label text="haha" />
-	<s:Button label="测试" />
+	<s:Button x="10" y="22" label="测试"/>
 </s:WindowedApplication>
