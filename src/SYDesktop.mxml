@@ -7,5 +7,4 @@
 	</fx:Declarations>
 	<s:Label text="haha" />
 	<s:Button x="10" y="22" label="测试"/>
-	<s:Label text="rrir" />
 </s:WindowedApplication>
