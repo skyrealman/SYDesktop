@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 title="Track">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<mx:VBox width="100%" height="100%">
+		<s:DataGrid requestedRowCount="4" width="100%">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="dataField1" headerText="Num" minWidth="50" maxWidth="150" width="100"></s:GridColumn>
+					<s:GridColumn dataField="dataField2" headerText="Subject"></s:GridColumn>
+					<s:GridColumn dataField="dataField3" headerText="Date" minWidth="150" maxWidth="250" width="200"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+			<s:typicalItem>
+				<fx:Object dataField1="示例数据" dataField2="示例数据" dataField3="示例数据"></fx:Object>
+			</s:typicalItem>
+
+		</s:DataGrid>
+		
+	</mx:VBox>
+</s:Panel>

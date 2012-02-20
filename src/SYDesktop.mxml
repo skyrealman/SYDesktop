@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx">
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:ibm="http://www.ibm.com/xmlns/prod/ilog/elixir/2010">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:Label text="haha" />
-	<s:Button x="10" y="22" label="测试"/>
-	<s:Label text="rrir" />
+	<mx:HBox>
+		<mx:VBox>
+			<s:Label text="haha" />
+			<s:Button x="10" y="22" label="测试"/>
+		</mx:VBox>
+		<mx:VBox>
+			<ibm:Calendar />
+		</mx:VBox>
+	</mx:HBox>
+
 </s:WindowedApplication>
