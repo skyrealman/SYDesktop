@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:comp="com.sz.sydesktop.view.components.*"  width="100%" height="100%">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	
-</mx:VBox>
+	<mx:VBox width="25%">
+		<comp:PendingPanel />
+		<comp:TrackPanel />
+	</mx:VBox>
+	<mx:VBox width="50%">
+		<comp:CalendarPanel />
+	</mx:VBox>
+	<mx:VBox>
+		<comp:ContactPanel />
+		<comp:MemoPanel />
+	</mx:VBox>
+</mx:HBox>
