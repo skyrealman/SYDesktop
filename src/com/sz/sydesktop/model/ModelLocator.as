@@ -31,7 +31,7 @@ package com.sz.sydesktop.model {
 			
 		}
 		
-		public static var USER_TOKEN:String = "11df-dcc6-64fcf96a-8a70-5b9af8e9e0ca@0784d2a5-3ebc-4f17-8c2a-ed013079066f";
+		public static var USER_TOKEN:String = "11df-dcd7-59983278-8a70-5b9af8e9e0ca@de491612-5c59-4720-8af4-ef3b2c58a15a";
 		
 		/*
 		*	Variables
