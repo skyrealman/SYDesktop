@@ -6,15 +6,28 @@
 		 initialize="initializeHandler(event)" xmlns:control="com.sz.sydesktop.control.*" xmlns:business="com.sz.sydesktop.business.*">
 	<fx:Script>
 		<![CDATA[
-			import com.adobe.cairngorm.control.CairngormEventDispatcher;
 			import com.sz.sydesktop.events.GetAppEvent;
+			import com.sz.sydesktop.model.ModelLocator;
+			import com.sz.sydesktop.util.Utillity;
 			
 			import mx.events.FlexEvent;
 			
 			protected function initializeHandler(event:FlexEvent):void
 			{
-				var getAppEvent:GetAppEvent = new GetAppEvent();
-				getAppEvent.dispatch();
+				NativeApplication.nativeApplication.addEventListener(BrowserInvokeEvent.BROWSER_INVOKE, function listener(e:BrowserInvokeEvent):void{
+					if(e.arguments.length == 3){
+						var token:String = e.arguments[0] + "@" + e.arguments[1];
+						Utillity.saveToken(token);
+						NativeApplication.nativeApplication.exit();
+					}else
+						NativeApplication.nativeApplication.exit();
+				});
+				var USER_TOKEN:String = Utillity.readToken();
+				if(USER_TOKEN != null){
+					ModelLocator.USER_TOKEN = USER_TOKEN;
+					var getAppEvent:GetAppEvent = new GetAppEvent();
+					getAppEvent.dispatch();
+				}
 			}
 			
 		]]>

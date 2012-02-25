@@ -15,7 +15,7 @@
 
 	<!-- A universally unique application identifier. Must be unique across all AIR applications.
 	Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-	<id>SYDesktop</id>
+	<id>com.sz.sydesktop.SYDesktop</id>
 
 	<!-- Used as the filename for the application. Required. -->
 	<filename>SYDesktop</filename>
@@ -143,7 +143,7 @@
 	
 	<!-- Whether the application can be launched when the user clicks a link in a web browser.
 	Optional. Default false. -->
-	<!-- <allowBrowserInvocation></allowBrowserInvocation> -->
+	<allowBrowserInvocation>true</allowBrowserInvocation>
 
 	<!-- Listing of file types for which the application can register. Optional. -->
 	<!-- <fileTypes> -->
