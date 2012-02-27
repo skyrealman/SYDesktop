@@ -12,7 +12,7 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<mx:VBox width="100%" height="100%">
-		<s:DataGrid requestedRowCount="10" width="100%" dataProvider="{ModelLocator.getInstance().pendings}">
+		<s:DataGrid requestedRowCount="10" width="100%" height="100%" dataProvider="{ModelLocator.getInstance().pendings}">
 			<s:columns>
 				<s:ArrayList>
 					<s:GridColumn dataField="summary" headerText="描述"></s:GridColumn>

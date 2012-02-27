@@ -3,7 +3,7 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:sz="com.sz.sydesktop.view.*"
-					   title="Bureau Director Desktop">
+					   title="局长办公系统--华东有色地勘局政务平台">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.ItemClickEvent;
+			import flash.events.KeyboardEvent;
+			import spark.components.DataGrid;
+			import mx.validators.NumberValidator;
+			
+			[Bindable]
+			[Embed(source='assets/first.jpg')]
+			private var firstIcon:Class;				  
+			private var firstPage:uint; 
+			
+			[Bindable]
+			[Embed(source='assets/pre.jpg')]
+			private var preIcon:Class;
+			private var prePage:uint; 
+			
+			[Bindable]
+			[Embed(source='assets/next.jpg')]
+			private var nextIcon:Class;
+			private var nextPage:uint; 
+			
+			[Bindable]
+			[Embed(source='assets/last.jpg')]
+			private var lastIcon:Class;
+			private var lastPage:uint;
+			
+			//页码条数据,绑定
+			[Bindable]
+			private var nav:ArrayCollection = new ArrayCollection();
+			
+			//默认起始页码,第1页
+			private var currentPageIndex:uint = 0;
+			
+			//是否已初始化
+			private var isInit:Boolean=true;                  
+			
+			//总页数
+			private var totalPages:uint = 0;
+			
+			//是否重绘页码条，当使用服务端分页时使用
+			private var isCreateNavBar:Boolean = true;
+			
+			/************************************************************/
+			
+			//显示到Grid的数据
+			[Bindable]
+			public var viewData:ArrayCollection=null;
+			
+			//所有的数据
+			public var orgData:ArrayCollection=null;
+			
+			//每页记录数下拉框
+			public var pageSizeDropDownListData:ArrayCollection=null;
+			
+			// 每页记录数 
+			public var pageSize:uint = 20; 
+			
+			// 页码条上显示页码的个数
+			public var navSize:uint = 5;
+			
+			//记录总数，调用服务端发页时使用
+			public var totalRecord:int=0;
+			
+			//分页函数
+			public var pagingFunction:Function=null;
+			
+			//分页条对应的Grid
+			public var dataGrid:DataGrid=null;
+			
+			/***************************************************************/
+			
+			public function dataBind(isServerSide:Boolean=false):void{
+				//是否初始化
+				if(isInit){
+					if(pageSizeDropDownListData==null){
+						pageSizeDropDownListData = new ArrayCollection();
+						pageSizeDropDownListData.addItem({label:5,data:5});
+						pageSizeDropDownListData.addItem({label:10,data:10});
+						pageSizeDropDownListData.addItem({label:20,data:20});
+						pageSizeDropDownListData.addItem({label:30,data:30});					        
+					}
+					//pageSizeComobox.dataProvider=pageSizeDropDownListData;
+					isInit=false;
+				}
+				//					                        					
+				refreshDataProvider(currentPageIndex,isCreateNavBar,pageSize,isServerSide);
+			}
+			
+			
+			
+			/**
+			 * 构建页码条
+			 * pages:总页数
+			 * pageIndex:当前页（注意，从0开始）
+			 *
+			 */
+			private function createNavBar(pageIndex:uint = 0):void{
+				nav.removeAll();
+				//向前图标操作,first,Pre
+				if( pageIndex > 1 ){
+					firstPage=0;
+					firstNavBtn.visible=true;
+					//
+					var intLFive:int = pageIndex-navSize; // calculate start of last 5;
+					//
+					prePage=intLFive;
+					preNavBtn.visible=true;
+				}
+				else{
+					firstNavBtn.visible=false;
+					preNavBtn.visible=false;
+				}
+				//页码条        
+				for( var x:uint = 0; x < navSize; x++){
+					var pg:uint = x + pageIndex;
+					nav.addItem({label: pg + 1,data: pg});
+					//	
+					var pgg:uint = pg+1;
+					if(pgg>=totalPages){ //搜索到最后一个页码，停止添加到navbar
+						x=navSize; 
+					}
+				}
+				//计算最后一组页码条中第一个页码的页码编号
+				var lastpage:Number = 0;
+				for( var y:uint = navSize; y <= totalPages-1;y = y + navSize ){ //lets calculate the lastpage button
+					if(y+5 > navSize){
+						lastpage = y;
+					}
+				}					  
+				//向后图标
+				if( pg < totalPages - 1 ){
+					nextPage=pg + 1;
+					nextNavBtn.visible=true;
+					lastPage=lastpage;
+					lastNavBtn.visible=true;
+				}
+				else{                              
+					nextNavBtn.visible=false;
+					lastNavBtn.visible=false;
+				}
+			}
+			
+			/**
+			 * 页码按钮按下(页码条点击)
+			 */ 
+			private function navigatePage(event:ItemClickEvent):void
+			{
+				refreshDataProvider(event.item.data,false);   
+			}
+			
+			/**
+			 * 页码按钮按下,first,pre,next,last
+			 */ 
+			private function navigateButtonClick(pageString:String):void{
+				var pageIndex:uint=0;
+				switch(pageString){
+					case "firstPage":
+						pageIndex=firstPage;
+						break;
+					case "prePage":
+						pageIndex=prePage;
+						break;
+					case "nextPage":
+						pageIndex=nextPage;
+						break;
+					default:	//lastPage
+						pageIndex=lastPage;
+				}
+				//
+				refreshDataProvider(pageIndex);
+			}
+			
+			/**
+			 * 更新数据源,更新表格显示数据
+			 */ 
+			private function refreshDataProvider(pageIndex:uint,isCreateNavBar:Boolean=true,pageSize:uint=0,resultReturn:Boolean=false):void{
+				//分页函数
+				if(dataGrid==null) return;
+				currentPageIndex=pageIndex;
+				if(pageSize==0){
+					pageSize=this.pageSize;	
+				}else{
+					this.pageSize=pageSize;
+					if(!resultReturn) totalPages = Math.ceil(orgData.length/pageSize);
+				}	                  
+				if(!resultReturn){	                  		  			             		                  	
+					if(this.pagingFunction!=null){
+						pagingFunction(pageIndex,pageSize);
+						this.isCreateNavBar=isCreateNavBar;	
+					}
+					else{
+						viewData = new ArrayCollection( orgData.source.slice((pageIndex * pageSize),(pageIndex * pageSize) + pageSize) );                  	
+						dataGrid.dataProvider=viewData;
+						
+						totalRecordLabel.text = '总记录数：' + orgData.length.toString();				              	  		                  
+					}
+				}
+				else{
+					dataGrid.dataProvider=orgData;
+					totalPages = Math.ceil(totalRecord/pageSize);
+					totalRecordLabel.text = '总记录数：' + totalRecord.toString()			
+				}
+				totalPagesLabel.text = '总页数：' + totalPages;
+				if(isCreateNavBar) createNavBar(pageIndex);
+			}
+			//
+
+		]]>
+	</fx:Script>
+	
+	<mx:HBox paddingTop="8">
+		<mx:Button id="firstNavBtn" icon="{firstIcon}" width="10" height="10" click="navigateButtonClick('firstPage');" />
+		<mx:Button id="preNavBtn" icon="{preIcon}" width="7" height="10" click="navigateButtonClick('prePage');"/>
+	</mx:HBox>
+	<mx:LinkBar id="pageNav" itemClick="navigatePage(event)" dataProvider="{nav}"/>
+	<mx:HBox paddingTop="8">
+		<mx:Button id="nextNavBtn" icon="{nextIcon}" width="7" height="10" click="navigateButtonClick('nextPage');"/>
+		<mx:Button id="lastNavBtn" icon="{lastIcon}" width="10" height="10" click="navigateButtonClick('lastPage');"/>
+	</mx:HBox>
+	<mx:VRule height="25"/>
+	<mx:Label paddingTop="3" id="totalPagesLabel" text=""/>
+	<mx:Label paddingTop="3" id="totalRecordLabel" text=""/>
+</mx:HBox>

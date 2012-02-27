@@ -37,15 +37,14 @@
 		<control:PendingControl />
 		<business:Services />
 	</fx:Declarations>
-	<mx:VBox width="25%">
-		<comp:PendingPanel />
-		<comp:TrackPanel />
+	<mx:VBox width="25%" height="100%">
+		<comp:PendingPanel height="50%" width="{Capabilities.screenResolutionX/4}" />
+		<comp:TrackPanel height="50%" width="{Capabilities.screenResolutionX/4}"/>
 	</mx:VBox>
-	<mx:VBox width="50%">
-		<comp:CalendarPanel />
+	<mx:VBox width="50%" height="100%">
+		<comp:CalendarPanel height="100%" width="{Capabilities.screenResolutionX/2}" />
 	</mx:VBox>
-	<mx:VBox>
-		<comp:ContactPanel />
-		<comp:MemoPanel />
+	<mx:VBox width="25%" height="100%">
+		<comp:ContactPanel height="100%" width="{Capabilities.screenResolutionX/4}" />
 	</mx:VBox>
 </mx:HBox>
