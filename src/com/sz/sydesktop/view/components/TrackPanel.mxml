@@ -6,13 +6,32 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.sz.sydesktop.model.ModelLocator;
+			import com.sz.sydesktop.vo.TrackVO;
+			import com.sz.sydesktop.util.Constants;
+			import spark.events.GridEvent;
+			
+			protected function TrackGrid_gridDoubleClickHandler(event:GridEvent):void
+			{
+				var tVO:TrackVO = TrackGrid.selectedItem as TrackVO;
+				var jump:String = Constants.documentUrl+"?_docid="+tVO.id+"&_formid="+TrackVO.formid;
+				var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid=11df-d5cd-a070e761-9234-c19050f7abd5";
+				var urlRequest:URLRequest = new URLRequest(url);
+				//trace(url);
+				navigateToURL(urlRequest);				
+			}
+			
+		]]>
+	</fx:Script>
 	<mx:VBox width="100%" height="100%">
-		<s:DataGrid requestedRowCount="10" height="100%" width="100%">
+		<s:DataGrid requestedRowCount="10" height="100%" width="100%" id="TrackGrid" dataProvider="{ModelLocator.getInstance().tracks}" gridDoubleClick="TrackGrid_gridDoubleClickHandler(event)" doubleClickEnabled="true">
 			<s:columns>
 				<s:ArrayList>
-					<s:GridColumn dataField="dataField1" headerText="Num" minWidth="50" maxWidth="150" width="100"></s:GridColumn>
-					<s:GridColumn dataField="dataField2" headerText="Subject"></s:GridColumn>
-					<s:GridColumn dataField="dataField3" headerText="Date" minWidth="150" maxWidth="250" width="200"></s:GridColumn>
+					<s:GridColumn dataField="title" headerText="事件描述" width="{TrackGrid.width/2}"></s:GridColumn>
+					<s:GridColumn dataField="person" headerText="经办人" width="{TrackGrid.width/4}"></s:GridColumn>
+					<s:GridColumn dataField="date" headerText="日期"></s:GridColumn>
 				</s:ArrayList>
 			</s:columns>
 			<s:typicalItem>

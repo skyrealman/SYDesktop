@@ -3,10 +3,82 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:sz="com.sz.sydesktop.view.*"
-					   title="局长办公系统--华东有色地勘局政务平台">
+					   title="局长办公系统--华东有色地勘局政务平台"
+					   initialize="initializeHandler(event)">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			[Embed(source='assets/App_16.png')]
+			private var icon16:Class;
+						
+			protected function initializeHandler(event:FlexEvent):void{
+				this.titleIcon = icon16;
+				this.maximize();
+				dockHandler();
+				
+			}
+			
+			private function dockHandler():void{
+				addSysTrayIcon();
+			}
+
+			
+			private function addSysTrayIcon():void{
+				this.nativeApplication.icon.bitmaps = [new icon16()];
+				if(NativeApplication.supportsSystemTrayIcon){
+					var sti:SystemTrayIcon = SystemTrayIcon(this.nativeApplication.icon);
+					//创建菜单列表
+					sti.menu = createSysTrayMenu();
+					//单击系统托盘图标时恢复窗口
+					//sti.addEventListener(MouseEvent.CLICK,restoreFromSysTrayHandler);
+				}
+			}
+			
+			private function createSysTrayMenu():NativeMenu{
+				var menu:NativeMenu = new NativeMenu();
+				var labels:Array = ["打开","","退出程序"];
+				var names:Array = ["mnuOpen","mnuSep1","mnuExit"];
+				for (var i:int = 0;i<labels.length;i++){
+					//如果标签为空的话，就认为是分隔符
+					var menuItem:NativeMenuItem = new NativeMenuItem( labels[i],labels[i]=="");
+					menuItem.name = names[i];
+					menuItem.addEventListener(Event.SELECT,sysTrayMenuHandler );//菜单处理事件
+					menu.addItem( menuItem );                
+				}
+				
+				return menu;
+			}
+			
+			private function sysTrayMenuHandler(event:Event):void{
+				switch(event.target.name){
+					case "mnuOpen"://打开菜单
+						undockHandler();
+						break;
+					case "mnuExit"://退出菜单
+						exitHandler();
+						break;
+				}
+				
+			}
+			
+			private function undockHandler():void{
+				this.nativeWindow.visible = true;
+				this.nativeApplication.icon.bitmaps = [];
+				//窗口提到最前面
+				this.nativeWindow.orderToFront();
+				//激活当前窗口
+				this.activate();
+			}
+			
+			private function exitHandler():void{
+				this.exit();
+			}
+		]]>
+	</fx:Script>
 	<mx:HBox width="100%" height="100%">
 		<sz:MainFrameView width="100%" />
 	</mx:HBox>

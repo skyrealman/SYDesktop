@@ -3,7 +3,7 @@
 	xmlns:cairngorm="com.adobe.cairngorm.business.*" >
 	
 	<mx:HTTPService id="pendingsService"
-					url="http://10.0.0.82:18081/client/getPendings.action"
+					url="http://10.4.3.1:8080/obpm/client/getPendings.action"
 					resultFormat="text"
 					showBusyCursor="true" />
 	
@@ -12,4 +12,18 @@
 					resultFormat="text"
 					showBusyCursor="true" />
 	
+	<mx:HTTPService id="trackService"
+					url="http://10.4.3.1:8080/obpm/client/getBossTracking.action"
+					resultFormat="text"
+					showBusyCursor="true" />
+	
+	<mx:HTTPService id="contactService"
+					url="http://10.4.3.1:8080/obpm/client/getBossContacts.action"
+					resultFormat="text"
+					showBusyCursor="true" />
+	
+	<mx:HTTPService id="calendarService" 
+					url="http://10.4.3.1:8080/obpm/client/getBossCalendar.action"
+					resultFormat="text"
+					showBusyCursor="true" />
 </cairngorm:ServiceLocator>

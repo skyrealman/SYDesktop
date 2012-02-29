@@ -7,6 +7,8 @@
 	<fx:Script>
 		<![CDATA[
 			import com.sz.sydesktop.events.GetAppEvent;
+			import com.sz.sydesktop.events.RefreshContactEvent;
+			import com.sz.sydesktop.events.RefreshTrackEvent;
 			import com.sz.sydesktop.model.ModelLocator;
 			import com.sz.sydesktop.util.Utillity;
 			
@@ -25,21 +27,26 @@
 				var USER_TOKEN:String = Utillity.readToken();
 				if(USER_TOKEN != null){
 					ModelLocator.USER_TOKEN = USER_TOKEN;
-					var getAppEvent:GetAppEvent = new GetAppEvent();
-					getAppEvent.dispatch();
 				}
+				var getAppEvent:GetAppEvent = new GetAppEvent();
+				getAppEvent.dispatch();
+				var getTrackEvent:RefreshTrackEvent = new RefreshTrackEvent();
+				getTrackEvent.dispatch();
+				var getContactEvent:RefreshContactEvent = new RefreshContactEvent();
+				getContactEvent.dispatch();
 			}
-			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<control:AppControl />
 		<control:PendingControl />
+		<control:TrackControl />
+		<control:ContactControl />
 		<business:Services />
 	</fx:Declarations>
 	<mx:VBox width="25%" height="100%">
-		<comp:PendingPanel height="50%" width="{Capabilities.screenResolutionX/4}" />
-		<comp:TrackPanel height="50%" width="{Capabilities.screenResolutionX/4}"/>
+		<comp:PendingPanel height="50%" width="{Capabilities.screenResolutionX/4}"  />
+		<comp:TrackPanel height="50%" width="{Capabilities.screenResolutionX/4}"  />
 	</mx:VBox>
 	<mx:VBox width="50%" height="100%">
 		<comp:CalendarPanel height="100%" width="{Capabilities.screenResolutionX/2}" />

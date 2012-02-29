@@ -228,5 +228,5 @@
 	</mx:HBox>
 	<mx:VRule height="25"/>
 	<mx:Label paddingTop="3" id="totalPagesLabel" text=""/>
-	<mx:Label paddingTop="3" id="totalRecordLabel" text=""/>
+	<mx:Label paddingTop="3" id="totalRecordLabel" text="" />
 </mx:HBox>

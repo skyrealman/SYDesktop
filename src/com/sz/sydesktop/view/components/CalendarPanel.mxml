@@ -3,11 +3,60 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:ibm="http://www.ibm.com/xmlns/prod/ilog/elixir/2010"
-		 title="日程表">
+		 title="日程表" creationComplete="panel1_creationCompleteHandler(event)">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.ibm.ilog.elixir.calendar.components.supportClasses.CalendarItem;
+			import com.sz.sydesktop.events.RefreshCalendarEvent;
+			
+			import mx.events.FlexEvent;
+			import mx.utils.ColorUtil;
+			
+			private var pastEventsColor:uint = 0xEEEEEE;
+			
+			private function itemColorFunction(item:Object,selected:Boolean,hovered:Boolean):Object{
+				var now:Date = new Date();
+				var color:uint;
+				var calItem:CalendarItem = calendar.itemToCalendarItem(item);
+				
+				if(calItem.endTime < now){
+					color = pastEventsColor;
+				}else{
+					color = 0x559def;
+					
+				}
+				
+				var colorOffset:int = hovered ? (selected ? -20:20) :(selected ? -40 : 0);
+				color = mx.utils.ColorUtil.adjustBrightness2(color,colorOffset);
+				return color;
+			}
+			
+			protected function panel1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var getCalendarEvent:RefreshCalendarEvent = new RefreshCalendarEvent();
+				trace(calendar.startDate);
+				//getCalendarEvent.start=calendar.startDate.toString();
+				
+				//getCalendarEvent.end=calendar.endDate.toString();
+				getCalendarEvent.dispatch();
+			}
+			
+		]]>
+	</fx:Script>
 	<mx:VBox width="100%" height="100%">
-		<ibm:Calendar width="100%" height="100%"/>
+		<ibm:Calendar id="calendar" width="100%" height="100%" dateInterval="week" itemColorFunction="{itemColorFunction}" startDate="{new Date(2012,3,1)}">
+			<s:ArrayList>
+				<fx:Object startTime="2012/02/28 9:00" endTime="2012/02/28 15:30" label="测试calendar" />
+				<fx:Object startTime="2012/02/29 9:00" endTime="2012/03/01 9:30" label="完成局长办公系统" />
+				<fx:Object startTime="2012/03/02 8:30" endTime="2012/03/12 11:30" label="局务例会"/>
+				<fx:Object startTime="2012/03/01 8:30" endTime="2012/03/1 11:30" label="test sadfafsaafafsadffffffffffffffffffffffffffffffffffffff" />
+				<fx:Object startTime="2012/03/01 9:30" endTime="2012/03/1 13:30" label="我就是用来测试的那个日程，悲剧啊"/>
+				
+			</s:ArrayList>
+
+		</ibm:Calendar>
 	</mx:VBox>
 </s:Panel>

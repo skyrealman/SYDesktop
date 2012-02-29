@@ -3,40 +3,47 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:control="com.sz.sydesktop.view.components.*"
-		 title="通讯录" creationComplete="creationCompleteHandle()">
+		 title="通讯录">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import mx.collections.ArrayCollection;
-			protected function creationCompleteHandle():void{
+			import com.sz.sydesktop.model.ModelLocator;
+			import com.sz.sydesktop.vo.ContactVO;
+			import com.sz.sydesktop.util.Constants;
+			import spark.events.GridEvent;
+			
+			
+			protected function ContactGrid_gridDoubleClickHandler(event:GridEvent):void
+			{
+				var cVO:ContactVO = ContactGrid.selectedItem as ContactVO;
+				var jump:String = Constants.documentUrl+"?_docid="+cVO.id+"&_formid="+ContactVO.formid;
+				var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid=11df-d5cd-a070e761-9234-c19050f7abd5";
+				var urlRequest:URLRequest = new URLRequest(url);
+				//trace(url);
+				navigateToURL(urlRequest);	
 				
-				var orgData:ArrayCollection = new ArrayCollection();
-				for( var x:uint = 1; x <= 555; x++ )
-				{
-					var obj:Object = new Object();
-					obj.aa="数据"+x.toString();
-					obj.bb="数据"+x.toString();
-					obj.cc="数据"+x.toString();
-					orgData.addItem(obj);
-				}
-				contactPagingBar.dataGrid=DataGrid1;
-				contactPagingBar.orgData=orgData;
-				contactPagingBar.dataBind();
 			}
+			
 		]]>
 	</fx:Script>
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		@namespace control "com.sz.sydesktop.view.components.*";
+		.headerStyle{
+			textAlign:center;
+		}
+	</fx:Style>
 	<mx:VBox width="100%" height ="100%">
-		<s:DataGrid requestedRowCount="10" width="100%" height="100%" id="DataGrid1">
+		<s:DataGrid requestedRowCount="10" width="100%" height="100%" id="ContactGrid" dataProvider="{ModelLocator.getInstance().contacts}" doubleClickEnabled="true" gridDoubleClick="ContactGrid_gridDoubleClickHandler(event)">
 			<s:columns>
 				<s:ArrayList>
-					<s:GridColumn dataField="aa" headerText="列 1"></s:GridColumn>
-					<s:GridColumn dataField="bb" headerText="列 2"></s:GridColumn>
-					<s:GridColumn dataField="cc" headerText="列 3"></s:GridColumn>
+					<s:GridColumn dataField="name" headerText="姓名" width="{ContactGrid.width/4}" ></s:GridColumn>
+					<s:GridColumn dataField="teldo" headerText="移动电话"></s:GridColumn>
 				</s:ArrayList>
 			</s:columns>
 		</s:DataGrid>
-		<control:PagingBar id="contactPagingBar" />
 	</mx:VBox>
 </s:Panel>

@@ -41,6 +41,9 @@ package com.sz.sydesktop.model {
 		
 		public var applications:Dictionary;
 		public var pendings:ArrayCollection;
+		public var tracks:ArrayCollection;
+		public var contacts:ArrayCollection;
+		public var calendars:ArrayCollection;
 	}
 }
 

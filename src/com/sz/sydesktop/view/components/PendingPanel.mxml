@@ -6,16 +6,32 @@
 	<fx:Script>
 		<![CDATA[
 			import com.sz.sydesktop.model.ModelLocator;
+			import com.sz.sydesktop.vo.PendingVO;
+			import com.sz.sydesktop.util.Constants;
+			import flash.net.navigateToURL;
+			
+			import spark.events.GridEvent;
+			protected function gridDoubleClick(event:GridEvent):void{
+				var pVO:PendingVO = PendingGrid.selectedItem as PendingVO;
+				var jump:String = Constants.documentUrl+"?_docid="+pVO.docid+"&_formid="+pVO.formid;
+				var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid="+pVO.appid;
+				var urlRequest:URLRequest = new URLRequest(url);
+				//trace(url);
+				navigateToURL(urlRequest);
+			}
+			
+
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<mx:VBox width="100%" height="100%">
-		<s:DataGrid requestedRowCount="10" width="100%" height="100%" dataProvider="{ModelLocator.getInstance().pendings}">
+		<s:DataGrid requestedRowCount="10" width="100%" height="100%" dataProvider="{ModelLocator.getInstance().pendings}" doubleClickEnabled="true" id="PendingGrid" gridDoubleClick="gridDoubleClick(event)" >
 			<s:columns>
 				<s:ArrayList>
-					<s:GridColumn dataField="summary" headerText="描述"></s:GridColumn>
+					<s:GridColumn dataField="summary" headerText="事件描述" width="{PendingGrid.width*3/4}"></s:GridColumn>
 					<s:GridColumn dataField="date" headerText="日期"></s:GridColumn>
 				</s:ArrayList>
 			</s:columns>
