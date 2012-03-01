@@ -3,15 +3,21 @@ package com.sz.sydesktop.commands
 	import com.adobe.cairngorm.commands.ICommand;
 	import com.adobe.cairngorm.control.CairngormEvent;
 	import com.sz.sydesktop.business.AppsDelegate;
+	import com.sz.sydesktop.events.RefreshCalendarEvent;
+	import com.sz.sydesktop.events.RefreshContactEvent;
 	import com.sz.sydesktop.events.RefreshPendingsEvent;
+	import com.sz.sydesktop.events.RefreshTrackEvent;
 	import com.sz.sydesktop.model.ModelLocator;
 	
+	import flash.events.TimerEvent;
 	import flash.utils.Dictionary;
+	import flash.utils.Timer;
 	
 	import mx.rpc.IResponder;
 	
 	public class GetAppCommand implements ICommand, IResponder
 	{
+		
 		
 		public function execute(event:CairngormEvent):void
 		{

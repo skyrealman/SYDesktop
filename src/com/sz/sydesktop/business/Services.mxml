@@ -3,7 +3,7 @@
 	xmlns:cairngorm="com.adobe.cairngorm.business.*" >
 	
 	<mx:HTTPService id="pendingsService"
-					url="http://10.4.3.1:8080/obpm/client/getPendings.action"
+					url="http://10.0.0.82:18081/client/getPendings.action"
 					resultFormat="text"
 					showBusyCursor="true" />
 	

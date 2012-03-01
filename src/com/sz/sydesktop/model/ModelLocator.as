@@ -7,6 +7,7 @@ package com.sz.sydesktop.model {
 	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
+	import mx.collections.ArrayList;
     
     [Bindable]
 	public final class ModelLocator implements IModelLocator {
@@ -43,7 +44,7 @@ package com.sz.sydesktop.model {
 		public var pendings:ArrayCollection;
 		public var tracks:ArrayCollection;
 		public var contacts:ArrayCollection;
-		public var calendars:ArrayCollection;
+		public var calendars:ArrayList;
 	}
 }
 

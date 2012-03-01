@@ -10,7 +10,7 @@ package com.sz.sydesktop.vo
 		
 		public var remind:String;
 		
-		public var starttime:String;
+		public var startTime:String;
 		
 		public var status:String;
 		
@@ -18,11 +18,11 @@ package com.sz.sydesktop.vo
 		
 		public var accessories:String;
 		
-		public var affair:String;
+		public var label:String;
 		
 		public var content1:String;
 		
-		public var endtime:String;
+		public var endTime:String;
 		
 		public var import_urgent:String;
 		

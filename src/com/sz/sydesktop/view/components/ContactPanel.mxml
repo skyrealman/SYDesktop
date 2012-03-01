@@ -17,12 +17,15 @@
 			
 			protected function ContactGrid_gridDoubleClickHandler(event:GridEvent):void
 			{
-				var cVO:ContactVO = ContactGrid.selectedItem as ContactVO;
-				var jump:String = Constants.documentUrl+"?_docid="+cVO.id+"&_formid="+ContactVO.formid;
-				var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid=11df-d5cd-a070e761-9234-c19050f7abd5";
-				var urlRequest:URLRequest = new URLRequest(url);
-				//trace(url);
-				navigateToURL(urlRequest);	
+				if(ContactGrid.dataProvider.length>0){
+					var cVO:ContactVO = ContactGrid.selectedItem as ContactVO;
+					var jump:String = Constants.documentUrl+"?_docid="+cVO.id+"&_formid="+ContactVO.formid;
+					var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid=11df-d5cd-a070e761-9234-c19050f7abd5";
+					var urlRequest:URLRequest = new URLRequest(url);
+					//trace(url);
+					navigateToURL(urlRequest);	
+				}
+
 				
 			}
 			

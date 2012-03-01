@@ -10,7 +10,7 @@ package com.sz.sydesktop.business
 			super(responder, "calendarService");
 		}
 		
-		public function getCalendar(String start, String end):void{
+		public function getCalendar(start:String, end:String):void{
 			var params:Object = new Object();
 			params.start = start;
 			params.end =end;

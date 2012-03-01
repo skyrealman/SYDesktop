@@ -13,12 +13,15 @@ package com.sz.sydesktop.util
 		}
 		
 		public static function get updateUrl():String {
-			return servicesUrl+"update.xml";
+			return servicesUrl+"sydesktop.xml";
 		}
 		
 		public static function get documentUrl():String {
 			return "/portal/dynaform/document/view.action";
 		}
 		
+		public static function StringReplaceAll( source:String, find:String, replacement:String ):String{ 
+			return source.split( find ).join( replacement ); 
+		}
 	}
 }

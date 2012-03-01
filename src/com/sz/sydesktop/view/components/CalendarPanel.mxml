@@ -3,17 +3,82 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:ibm="http://www.ibm.com/xmlns/prod/ilog/elixir/2010"
-		 title="日程表" creationComplete="panel1_creationCompleteHandler(event)">
-	<fx:Declarations>
-		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
-	</fx:Declarations>
+		 title="日程表">
+	
 	<fx:Script>
 		<![CDATA[
+			import com.ibm.ilog.elixir.calendar.events.CalendarEvent;
+			import com.ibm.ilog.elixir.utils.TimeUnit;
+			
+			import mx.collections.ArrayList;
+			import mx.events.ItemClickEvent;
+			
+			protected function pre_clickHandler(event:MouseEvent):void
+			{
+				calendar.previousRange();
+				//calendar.dataProvider = ModelLocator.getInstance().calendars;
+			}
+			
+			protected function next_clickHandler(event:MouseEvent):void
+			{
+				calendar.nextRange();
+				//calendar.dataProvider = ModelLocator.getInstance().calendars;
+				//trace(calendar.renderData.startDisplayedDate);
+			}
+			
+			protected function calendar_visibleTimeRangeChangedHandler(event:CalendarEvent):void
+			{
+				refreshData();
+
+			}
+			
+			public function refreshData():void{
+				var getCalendarEvent:RefreshCalendarEvent = new RefreshCalendarEvent();
+				getCalendarEvent.start=dateToString(calendar.renderData.startDisplayedDate);
+				getCalendarEvent.end=dateToString(new Date(calendar.renderData.endDisplayedDate.time+24*60*60*1000));
+				trace(getCalendarEvent.start+"   "+getCalendarEvent.end);
+				
+				getCalendarEvent.dispatch();
+			}
+			protected function toggleButtonBar_itemClickHandler(event:ItemClickEvent):void
+			{
+				ModelLocator.getInstance().calendars = new ArrayList();
+				if(event.label=="每日"){
+					calendar.dateInterval = "day";
+				}else if(event.label=="每周"){
+					calendar.dateInterval = "week";
+				}else if(event.label=="每月"){
+					calendar.dateInterval = "month";
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<fx:Array id="arr">
+			<fx:Object label="每日" />
+			<fx:Object label="每周" />
+			<fx:Object label="每月" />
+		</fx:Array>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.formatters.DateFormatter;
 			import com.ibm.ilog.elixir.calendar.components.supportClasses.CalendarItem;
 			import com.sz.sydesktop.events.RefreshCalendarEvent;
-			
+			import com.sz.sydesktop.model.ModelLocator;
 			import mx.events.FlexEvent;
 			import mx.utils.ColorUtil;
+			
+			
+			[Embed(source='assets/pre.jpg')]
+			protected var preIcon:Class;
+			
+			[Embed(source='assets/next.jpg')]
+			protected var nextIcon:Class;
 			
 			private var pastEventsColor:uint = 0xEEEEEE;
 			
@@ -34,28 +99,28 @@
 				return color;
 			}
 			
-			protected function panel1_creationCompleteHandler(event:FlexEvent):void
-			{
-				var getCalendarEvent:RefreshCalendarEvent = new RefreshCalendarEvent();
-				trace(calendar.startDate);
-				//getCalendarEvent.start=calendar.startDate.toString();
-				
-				//getCalendarEvent.end=calendar.endDate.toString();
-				getCalendarEvent.dispatch();
+			
+			public function dateToString(date:Date):String{
+				var fmt:DateFormatter = new DateFormatter();
+				fmt.formatString = "YYYY-MM-DD";
+				return fmt.format(date);
 			}
 			
 		]]>
 	</fx:Script>
-	<mx:VBox width="100%" height="100%">
-		<ibm:Calendar id="calendar" width="100%" height="100%" dateInterval="week" itemColorFunction="{itemColorFunction}" startDate="{new Date(2012,3,1)}">
-			<s:ArrayList>
-				<fx:Object startTime="2012/02/28 9:00" endTime="2012/02/28 15:30" label="测试calendar" />
-				<fx:Object startTime="2012/02/29 9:00" endTime="2012/03/01 9:30" label="完成局长办公系统" />
-				<fx:Object startTime="2012/03/02 8:30" endTime="2012/03/12 11:30" label="局务例会"/>
-				<fx:Object startTime="2012/03/01 8:30" endTime="2012/03/1 11:30" label="test sadfafsaafafsadffffffffffffffffffffffffffffffffffffff" />
-				<fx:Object startTime="2012/03/01 9:30" endTime="2012/03/1 13:30" label="我就是用来测试的那个日程，悲剧啊"/>
+
+	<mx:VBox width="100%" height="100%" id="vv">
+		<mx:HBox>
+			<s:Button id="pre" icon="{preIcon}" width="30" click="pre_clickHandler(event)"/>
+			<s:Button id="next" icon="{nextIcon}" width="30" click="next_clickHandler(event)"/>
+
 				
-			</s:ArrayList>
+			<s:Spacer width="30"/>	
+			<mx:ToggleButtonBar id="toggleButtonBar" dataProvider="{arr}" selectedIndex="1" itemClick="toggleButtonBar_itemClickHandler(event)"/>
+		</mx:HBox>
+		<ibm:Calendar id="calendar" width="100%" height="100%" dateInterval="week" 
+					  dataProvider="{ModelLocator.getInstance().calendars}" 
+					  itemColorFunction="{itemColorFunction}" visibleTimeRangeChanged="calendar_visibleTimeRangeChangedHandler(event)" >
 
 		</ibm:Calendar>
 	</mx:VBox>

@@ -15,12 +15,15 @@
 			
 			protected function TrackGrid_gridDoubleClickHandler(event:GridEvent):void
 			{
-				var tVO:TrackVO = TrackGrid.selectedItem as TrackVO;
-				var jump:String = Constants.documentUrl+"?_docid="+tVO.id+"&_formid="+TrackVO.formid;
-				var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid=11df-d5cd-a070e761-9234-c19050f7abd5";
-				var urlRequest:URLRequest = new URLRequest(url);
-				//trace(url);
-				navigateToURL(urlRequest);				
+				if(TrackGrid.dataProvider.length>0){
+					var tVO:TrackVO = TrackGrid.selectedItem as TrackVO;
+					var jump:String = Constants.documentUrl+"?_docid="+tVO.id+"&_formid="+TrackVO.formid;
+					var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid=11df-d5cd-a070e761-9234-c19050f7abd5";
+					var urlRequest:URLRequest = new URLRequest(url);
+					//trace(url);
+					navigateToURL(urlRequest);		
+				}
+		
 			}
 			
 		]]>

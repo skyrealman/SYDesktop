@@ -12,12 +12,15 @@
 			
 			import spark.events.GridEvent;
 			protected function gridDoubleClick(event:GridEvent):void{
-				var pVO:PendingVO = PendingGrid.selectedItem as PendingVO;
-				var jump:String = Constants.documentUrl+"?_docid="+pVO.docid+"&_formid="+pVO.formid;
-				var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid="+pVO.appid;
-				var urlRequest:URLRequest = new URLRequest(url);
-				//trace(url);
-				navigateToURL(urlRequest);
+				if(PendingGrid.dataProvider.length>0){
+					var pVO:PendingVO = PendingGrid.selectedItem as PendingVO;
+					var jump:String = Constants.documentUrl+"?_docid="+pVO.docid+"&_formid="+pVO.formid;
+					var url:String = Constants.autoLoginUrl+"?token="+ModelLocator.USER_TOKEN+"&djump="+escape(jump)+"&appid="+pVO.appid;
+					var urlRequest:URLRequest = new URLRequest(url);
+					//trace(url);
+					navigateToURL(urlRequest);
+				}
+
 			}
 			
 
