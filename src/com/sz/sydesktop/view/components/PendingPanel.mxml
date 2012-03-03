@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<mx:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 title="待办事项">
@@ -44,4 +44,4 @@
 
 		</s:DataGrid>
 	</mx:VBox>
-</s:Panel>
+</mx:Panel>

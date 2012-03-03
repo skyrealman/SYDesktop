@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<mx:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:ibm="http://www.ibm.com/xmlns/prod/ilog/elixir/2010"
@@ -52,6 +52,16 @@
 				}
 			}
 			
+			protected function zoomIn_clickHandler(event:MouseEvent):void
+			{
+				calendar.zoom(1.3,false);
+			}
+			
+			protected function unzoom_clickHandler(event:MouseEvent):void
+			{
+				calendar.zoom(1/1.3,false);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -79,6 +89,12 @@
 			
 			[Embed(source='assets/next.jpg')]
 			protected var nextIcon:Class;
+			
+			[Embed(source='assets/zoom.png')]
+			protected var zoomIcon:Class;
+			
+			[Embed(source="assets/unzoom.png")]
+			protected var unzoomIcon:Class;
 			
 			private var pastEventsColor:uint = 0xEEEEEE;
 			
@@ -117,11 +133,15 @@
 				
 			<s:Spacer width="30"/>	
 			<mx:ToggleButtonBar id="toggleButtonBar" dataProvider="{arr}" selectedIndex="1" itemClick="toggleButtonBar_itemClickHandler(event)"/>
+			<s:Spacer width="30"/>	
+			
+			<s:Button id="zoom" icon="{zoomIcon}" width="50" click="zoomIn_clickHandler(event)" />
+			<s:Button id="unzoom" icon="{unzoomIcon}" width="50" click="unzoom_clickHandler(event)" />
 		</mx:HBox>
 		<ibm:Calendar id="calendar" width="100%" height="100%" dateInterval="week" 
-					  dataProvider="{ModelLocator.getInstance().calendars}" 
+					  dataProvider="{ModelLocator.getInstance().calendars}"  
 					  itemColorFunction="{itemColorFunction}" visibleTimeRangeChanged="calendar_visibleTimeRangeChangedHandler(event)" >
 
 		</ibm:Calendar>
 	</mx:VBox>
-</s:Panel>
+</mx:Panel>

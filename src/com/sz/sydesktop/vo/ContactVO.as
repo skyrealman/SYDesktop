@@ -24,7 +24,7 @@ package com.sz.sydesktop.vo
 		
 		public var teloffice:String; //办公室电话
 		
-		public var telwork:String; //业务电话
+		public var telwork:String; //联通短号码
 		
 		public var teldo:String; //移动电话
 		

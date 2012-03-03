@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<mx:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 title="跟踪事项">
+		 title="跟踪事项"  status="录入：陈恬慧          督办：郭峰          归档：葛舒荃      ">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -26,15 +26,33 @@
 		
 			}
 			
+			protected function TrackGrid_gridClickHandler(event:GridEvent):void
+			{
+
+				TrackChildGrid.dataProvider = ModelLocator.getInstance().tracks.getItemAt(TrackGrid.selectedIndex).childs;
+			}
+			
 		]]>
 	</fx:Script>
-	<mx:VBox width="100%" height="100%">
-		<s:DataGrid requestedRowCount="10" height="100%" width="100%" id="TrackGrid" dataProvider="{ModelLocator.getInstance().tracks}" gridDoubleClick="TrackGrid_gridDoubleClickHandler(event)" doubleClickEnabled="true">
+	<mx:HBox width="100%" height="100%">
+		<s:DataGrid requestedRowCount="10" width="75%" height="100%"  id="TrackGrid" 
+					dataProvider="{ModelLocator.getInstance().tracks}" 
+					 variableRowHeight="true"
+					gridClick="TrackGrid_gridClickHandler(event)"
+					horizontalScrollPolicy="on">
 			<s:columns>
 				<s:ArrayList>
-					<s:GridColumn dataField="title" headerText="事件描述" width="{TrackGrid.width/2}"></s:GridColumn>
-					<s:GridColumn dataField="person" headerText="经办人" width="{TrackGrid.width/4}"></s:GridColumn>
-					<s:GridColumn dataField="date" headerText="日期"></s:GridColumn>
+					<s:GridColumn dataField="num" headerText="编号" maxWidth="200" minWidth="100"/>
+					<s:GridColumn dataField="dateenter" headerText="登记时间" maxWidth="200" minWidth="100"/>
+					<s:GridColumn dataField="item" headerText="批示要点" showDataTips="true" maxWidth="400" minWidth="200"/>
+					<s:GridColumn dataField="describe" headerText="办理要求" showDataTips="true" maxWidth="400" minWidth="200" />
+					<s:GridColumn dataField="depart" headerText="办理部门" maxWidth="300" minWidth="100"/>
+					<s:GridColumn dataField="person" headerText="经办人" maxWidth="300" minWidth="100"/>
+					<s:GridColumn dataField="modality" headerText="下达方式" showDataTips="true" maxWidth="400" minWidth="200"/>
+					<s:GridColumn dataField="date" headerText="下达时间"  maxWidth="200" minWidth="100"/>
+					<s:GridColumn dataField="datedone" headerText="完成时限"  maxWidth="200" minWidth="100"/>
+					<s:GridColumn dataField="identify" headerText="办结情况" maxWidth="400" minWidth="200"/>
+					<s:GridColumn dataField="nextor" headerText="是否归档" width="100"/>
 				</s:ArrayList>
 			</s:columns>
 			<s:typicalItem>
@@ -43,5 +61,16 @@
 
 		</s:DataGrid>
 		
-	</mx:VBox>
-</s:Panel>
+		<s:DataGrid requestedRowCount="10" height="100%" width="25%" id="TrackChildGrid" variableRowHeight="true">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="follow" headerText="督办跟踪"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+			<s:typicalItem>
+				<fx:Object dataField1="示例数据"></fx:Object>
+			</s:typicalItem>
+			
+		</s:DataGrid>
+	</mx:HBox>
+</mx:Panel>
